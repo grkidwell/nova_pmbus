@@ -160,9 +160,9 @@ def load_commands(commandlist):
         time.sleep(.02)
         
         
-def load_fw_commands(commandlist):
+def load_fw_commands(commandlist,dev_addr):
     for line in commandlist:
-        command=FWcmdline(line)
+        command=FWcmdline(line,dev_addr)
         command.write()
         time.sleep(.01)       
             
@@ -182,13 +182,13 @@ class Enable:
         d.write_smb_cmd(0x01,1,['0x80'],self.dev_addr)
         time.sleep(0.25)
         state = d.read_smb_cmd(0x01,1,self.dev_addr)
-        print(state)
+        #print(state)
     
     def off(self):
         d.write_smb_cmd(0x01,1,['0x00'],self.dev_addr)
         time.sleep(0.25)
         state = d.read_smb_cmd(0x01,1,self.dev_addr)
-        print(state)
+        #print(state)
     
     def status(self):
         return d.read_smb_cmd(0x01,1,self.dev_addr)
