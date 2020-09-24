@@ -1,4 +1,4 @@
-import nova_lib as nova
+import lib.nova_lib as nova
 import sys
 
 hexfilename = '' #'ISL69269-1 0x60.hex'
@@ -28,8 +28,8 @@ def verify_device_and_file_versions():
 
 def write_hexfile_to_device():
     print("writing hex file to OTP")
-    #nova.load_commands(commands)
-    #nova.write_to_OTP(exec_command)
+    nova.load_commands(commands)
+    nova.write_to_OTP(exec_command)
 
 def reload_and_restart_fw():
     nova.Command('load_FW',SMB_Add).write_reg()

@@ -1,4 +1,4 @@
-import nova_lib as nova
+import lib.nova_lib as nova
 import sys
 
 patchfilename = 'patch_2_0_5_0.txt'
@@ -29,7 +29,7 @@ if proceed == "y" or proceed == "yes":
     nova.Command('halt_FW',SMB_Add).write_reg()
     print("loading fw patch")
     nova.load_fw_commands(commands,SMB_Add)
-    #nova.Command('commit_patch_data',SMB_Add).write_reg()
+    nova.Command('commit_patch_data',SMB_Add).write_reg()
     if (int(nova.Command('patch_status',SMB_Add).formatted()[0],16) >>4 & 1):
         input('fw patch successful! recycle Vcc then press enter to display fw revision')
         print(f"fw revision = {nova.Command('fw_revision',SMB_Add).formatted()}")
