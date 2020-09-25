@@ -2,11 +2,6 @@
 import lib.dongle_cmds as d
 import time
 
-'''
-place in parent program
-with open('patch_2_0_5_0.txt') as file:
-    file_contents = file.read()
-'''
 
 register = {'avail_NVM_slots': {'d_func': d.read_dma_cmd,'reg': ['0xc2', '0x00'],'data_length': 4, 'parse_idx':(0,1), 'mask': 0xFF, 'function': 'int_8bit'},
             'device_ID'      : {'d_func': d.read_smb_cmd,'reg': ['0xad'],        'data_length': 4, 'parse_idx':(2,3), 'mask': 0xFF, 'function': 'read_reg'},
@@ -30,21 +25,10 @@ register = {'avail_NVM_slots': {'d_func': d.read_dma_cmd,'reg': ['0xc2', '0x00']
             'commit_patch_data'     : {'d_func': d.write_smb_cmd,'reg':['0xe6'], 'data': ['0x0f','0x00'], 'function': 'write_reg'},
             'patch_status'   : {'d_func': d.read_dma_cmd,'reg': ['0xda', '0x00'],'data_length': 4, 'parse_idx':(3,4), 'mask': 0x10, 'function': 'read_reg'}}
 
-'''
-place in parent program
-lines        = file_contents.split('\n')
-commands     = lines[0:-1]
-'''
-
-'''
-place in parent program
-SMB_Add = 0x60
-'''
 
 #readsmb  - reg, data_length, dev_addr
 #writesmb - reg, data_length, data, dev_addr  
 #readdma  - reg,data_length, dev_addr
-
 #writedma - reg, data_length=2, data, dev_addr  #same as writesmb?
 
 

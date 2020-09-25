@@ -1,7 +1,7 @@
 import lib.nova_lib as nova
 import sys
 
-patchfilename = 'patch_2_0_5_0.txt'
+patchfilename = '' #'patch_2_0_5_0.txt'
 SMB_Add = 0x60
 
 try:
