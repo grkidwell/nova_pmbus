@@ -100,17 +100,19 @@ def check_REV(config_or_firmware = 'config',header='duh',dev_addr=0x60):
     def element_cmp(a,b):
         a,b = int(a,16), int(b,16)
         return a == b 
-    def cmp(a,b):
+
+    def cmp_a_b(a,b):
         result = [element_cmp(i,j) for i,j in zip(a,b)]
         if config_or_firmware == 'config':
             result[3] = a > b
         else:
             result[3] = a == b
         return all(result)
+
     file_rev = parse_line(header[1],(8,16))
     file_rev = [file_rev[i:i+2] for i in range(0, len(file_rev), 2)]
     ic_rev = Command('revision',dev_addr).formatted()
-    return cmp(ic_rev,file_rev)
+    return cmp_a_b(ic_rev,file_rev)
   
 
 
@@ -171,7 +173,7 @@ def load_fw_commands(commandlist,dev_addr):
     for line in commandlist:
         command=FWcmdline(line,dev_addr)
         command.write()
-        time.sleep(.01)       
+        time.sleep(.005)       
             
 def load_config_commands(commandlist,dev_addr):
     for line in commandlist:
