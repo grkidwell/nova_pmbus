@@ -31,7 +31,7 @@ if proceed == "y" or proceed == "yes":
     nova.load_fw_commands(commands,SMB_Add)
     nova.Command('commit_patch_data',SMB_Add).write_reg()
     if (int(nova.Command('patch_status',SMB_Add).formatted()[0],16) >>4 & 1):
-        input('fw patch successful! recycle Vcc then press enter to display fw revision')
+        input('fw patch successful! Cycle Vcc then press enter to display fw revision')
         print(f"fw revision = {nova.Command('fw_revision',SMB_Add).formatted()}")
     else:
         print(f"fw patch failed!  fw revision = {nova.Command('fw_revision',SMB_Add).formatted()}")

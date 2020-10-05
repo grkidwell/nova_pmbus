@@ -136,27 +136,52 @@ class FWcmdline:
             
     def write(self):
         d.write_smb_cmd(int(self.cmd,16),len(self.data),self.data,self.pmbaddr)
+
+class Config_cmdline:
+    def __init__(self,line,dev_addr):
+        self.line = line
+        self.pmbaddr = dev_addr
+        self.descr = self.line[:20].rstrip()
+        self.reg  = data_2_list(self.line[61:].rstrip())
+        self.data = data_2_list(self.line[37:47].rstrip())
+        self.add_leading_0byte_if_r()  
+        
+    def add_leading_0byte_if_r(self):
+        if self.descr[0] == 'r' and len(self.reg)==1:
+            self.reg.append('00') #is trailing since has been reversed by data_to_list()
+        
+    def write(self):
+        if len(self.reg) ==2:
+            d.write_dma_cmd(self.reg,len(self.data),self.data,self.pmbaddr)
+        else:
+            d.write_smb_cmd(self.reg,len(self.data),self.data,self.pmbaddr)
     
-def load_commands(commandlist):
+
+def load_OTP_commands(commandlist):
     for line in commandlist:
         command=Cmdline(line)
         command.write()
         time.sleep(.02)
         
-        
+def write_to_OTP(lastline):
+    command=Cmdline(lastline)
+    command.write()
+
 def load_fw_commands(commandlist,dev_addr):
     for line in commandlist:
         command=FWcmdline(line,dev_addr)
         command.write()
         time.sleep(.01)       
             
-def write_to_OTP(lastline):
-    command=Cmdline(lastline)
-    command.write()
+def load_config_commands(commandlist,dev_addr):
+    for line in commandlist:
+        command=Config_cmdline(line,dev_addr)
+        try:
+            command.write()
+        except:
+            print(line)
+        time.sleep(.005) 
     
-
-    
-
     
 class Enable:
     def __init__(self,dev_addr=0x60):
@@ -178,8 +203,7 @@ class Enable:
         return d.read_smb_cmd(0x01,1,self.dev_addr)
 
 
-
-
-
-
-
+def set_page(page,dev_addr):
+    reg=['0x00']
+    data = [hex(page)]
+    d.write_smb_cmd(reg,1,data,dev_addr)
