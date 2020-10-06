@@ -2,6 +2,7 @@
 import lib.dongle_cmds as d
 import time
 
+#---------------------------------------------------------------------------------------------    
 
 register = {'avail_NVM_slots': {'d_func': d.read_dma_cmd,'reg': ['0xc2', '0x00'],'data_length': 4, 'parse_idx':(0,1), 'mask': 0xFF, 'function': 'int_8bit'},
             'device_ID'      : {'d_func': d.read_smb_cmd,'reg': ['0xad'],        'data_length': 4, 'parse_idx':(2,3), 'mask': 0xFF, 'function': 'read_reg'},
@@ -25,13 +26,14 @@ register = {'avail_NVM_slots': {'d_func': d.read_dma_cmd,'reg': ['0xc2', '0x00']
             'commit_patch_data'     : {'d_func': d.write_smb_cmd,'reg':['0xe6'], 'data': ['0x0f','0x00'], 'function': 'write_reg'},
             'patch_status'   : {'d_func': d.read_dma_cmd,'reg': ['0xda', '0x00'],'data_length': 4, 'parse_idx':(3,4), 'mask': 0x10, 'function': 'read_reg'}}
 
+#---------------------------------------------------------------------------------------------    
 
 #readsmb  - reg, data_length, dev_addr
 #writesmb - reg, data_length, data, dev_addr  
 #readdma  - reg,data_length, dev_addr
 #writedma - reg, data_length=2, data, dev_addr  #same as writesmb?
 
-
+#---------------------------------------------------------------------------------------------    
 
 class Command:
     def __init__(self,reg_key, dev_addr):
@@ -40,7 +42,7 @@ class Command:
         self.dfunc       = self.params['d_func']
         self.reg         = self.params['reg']
         self.functiondict  = {'read_reg'    : self.read_reg,   'rev_reg'  : self.rev_reg, 
-                              'int_8bit'    : self.int_8bit,   'bin32'    : self.bin32, 
+                              'int_8bit'    : self.int_8bit,   
                               'apply_mask'  : self.apply_mask, 'write_reg': self.write_reg}
         
     def read_reg(self):
@@ -59,11 +61,8 @@ class Command:
     def decimal(self,data):
         return d.bytearray2decimal(data)
         
-    def bin32(self,data):
-        pass
-    
     def apply_mask(self):
-        data = self.read_reg() #int_8bit()
+        data = self.read_reg()
         #convert to integer
         return data #& self.params['mask']
     
@@ -75,17 +74,11 @@ class Command:
         data_length = len(data)
         self.dfunc(self.reg,data_length,data,self.dev_addr)
         
-        
-    
-    
-
+#---------------------------------------------------------------------------------------------    
 
 def parse_line(line,position_tuple):
     start, stop = position_tuple
     return line[start:stop]
-
-def is_header(line):
-    return parse_line(line,header_dict['type']) == '49'
 
 def data_2_list(data):
     datalist = [data[i:i+2] for i in range(0, len(data), 2)]
@@ -115,7 +108,7 @@ def check_REV(config_or_firmware = 'config',header='duh',dev_addr=0x60):
     ic_rev = Command('revision',dev_addr).formatted()
     return cmp_a_b(ic_rev,file_rev)
   
-
+#---------------------------------------------------------------------------------------------    
 
 class Cmdline:
     def __init__(self,line):
@@ -159,6 +152,7 @@ class Config_cmdline:
         else:
             d.write_smb_cmd(self.reg,len(self.data),self.data,self.pmbaddr)
     
+#---------------------------------------------------------------------------------------------    
 
 def load_OTP_commands(commandlist):
     for line in commandlist:
@@ -185,6 +179,7 @@ def load_config_commands(commandlist,dev_addr):
             print(line)
         time.sleep(.005) 
     
+#---------------------------------------------------------------------------------------------    
     
 class Enable:
     def __init__(self,dev_addr=0x60):
@@ -205,6 +200,7 @@ class Enable:
     def status(self):
         return d.read_smb_cmd(0x01,1,self.dev_addr)
 
+#---------------------------------------------------------------------------------------------    
 
 def set_page(page,dev_addr):
     reg=['0x00']
