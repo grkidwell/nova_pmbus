@@ -1,7 +1,7 @@
 import lib.nova_lib as nova
 import sys
 
-hexfilename = '' #'ISL69269-1 0x60.hex'
+hexfilename = '' #'sample_files/ISL69269-1 0x60.hex'
 SMB_Add = 0x60
 
 try:

@@ -32,6 +32,7 @@ register = {'avail_NVM_slots': {'d_func': d.read_dma_cmd,'reg': ['0xc2', '0x00']
 #writedma - reg, data_length=2, data, dev_addr  #same as writesmb?
 
 
+
 class Command:
     def __init__(self,reg_key, dev_addr):
         self.dev_addr = dev_addr

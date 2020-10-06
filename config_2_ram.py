@@ -1,7 +1,7 @@
 import lib.nova_lib as nova
 import sys
 
-configfilename = '' #'ISL69269-0 0x60g.txt'
+configfilename = '' #'sample_files/ISL69269-0 0x60g.txt'
 SMB_Add = 0x60
 
 try:
@@ -21,7 +21,7 @@ onoff= nova.Enable(dev_addr=SMB_Add)
 
 
 #main program
-
+nova.set_page(0,SMB_Add)
 onoff.off()
 try:
     nova.load_config_commands(commands,SMB_Add)
