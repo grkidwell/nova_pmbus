@@ -56,7 +56,7 @@ def create_data_contents(delta):
     delta_list=delta[['name','value','address']].values.tolist()
     data_contents=''
     for line in delta_list:
-        formatted_line = f"{line[0]:<19}{'0x'+line[1]:<22}"+'# 0x'+line[2]+'\n'
+        formatted_line = f"{line[0]:<35}{'0x'+line[1]:<22}"+'# 0x'+line[2]+'\n'
         data_contents = data_contents+formatted_line
     return data_contents
 
