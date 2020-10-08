@@ -5,6 +5,7 @@
 
 import pandas as pd
 from datetime import datetime
+import click
 
 class Config_cmdline:
     def __init__(self,line):
@@ -90,10 +91,23 @@ class file_delta:
             diff_file.write(self.file_contents)
 
 
-
 if __name__=='__main__':
-    oldprojectfile = 'sample_files/ISL69269-0 0x60e.txt'
-    newprojectfile = 'sample_files/ISL69269-0 0x60f.txt'
-    outputfilename = 'diff_file_ef.txt'
-    diff = file_delta(oldprojectfile,newprojectfile,outputfilename)
-    diff.write_outputfile()
+
+    @click.command()
+    @click.option('--oldfile', prompt="old project filename ", help='this *.txt file is created by PowerNavigator')
+    @click.option('--newfile', prompt="new project filename ", help='this *.txt file is created by PowerNavigator')
+    @click.option('--outfile', prompt="output project filename ", help='this *.txt file can be used as an input file by config_2_ram.py')
+
+    def inp(oldfile,newfile,outfile):
+        diff = file_delta(oldfile,newfile,outfile)
+        diff.write_outputfile()
+        click.echo('')
+        click.echo('diff file generated.  end of line')
+        
+
+
+    inp()
+    #oldprojectfile = 'sample_files/ISL69269-0 0x60e.txt'
+    #newprojectfile = 'sample_files/ISL69269-0 0x60f.txt'
+    #outputfilename = 'diff_file_ef.txt'
+    

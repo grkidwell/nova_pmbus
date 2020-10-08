@@ -1,2 +1,3 @@
 pywinusb
 pandas
+click
