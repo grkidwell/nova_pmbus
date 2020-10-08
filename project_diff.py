@@ -18,7 +18,7 @@ class Config_cmdline:
         
     def add_leading_0byte_if_r(self):
         if self.name[0] == 'r' and len(self.addr)==2:
-            self.addr='00'+self.addr #.append('00') #is trailing since has been reversed by data_to_list()
+            self.addr='00'+self.addr 
         
 def create_command_dict(commands):
     line   = [x for x,line in enumerate(commands)]
@@ -64,25 +64,24 @@ def create_file_contents(header_contents,data_contents):
     file_contents=header_contents+data_contents
     return file_contents
 
+class input_file:
+    def __init__(self,filename):
+        with open(filename) as file:
+            file_contents = file.read()
+        lines    = file_contents.split('\n')
+        commands = lines[9:-1]
+        self.header   = lines[:6]
+        self.crc      = lines[7]
+        self.command_dict = create_command_dict(commands)
+        self.df           = pd.DataFrame(self.command_dict)
+
 class file_delta:
     def __init__(self,oldfile,newfile,outputfile):
         self.outputfile = outputfile
-        with open(oldfile) as file:
-            file1_contents = file.read()
-        with open(newfile) as file:
-            file2_contents = file.read()
-        lines1        = file1_contents.split('\n')
-        lines2        = file2_contents.split('\n')
-        commands1     = lines1[9:-1]
-        commands2     = lines2[9:-1]
-        header        = lines2[:6]
-        crc           = lines2[7]
-        command1_dict = create_command_dict(commands1)
-        command2_dict = create_command_dict(commands2)
-        df1           = pd.DataFrame(command1_dict) 
-        df2           = pd.DataFrame(command2_dict)
-        self.delta    = create_diff_df_with_pagecalls(df1,df2)
-        hdr           = create_file_header(header,crc)
+        old_file      = input_file(oldfile)
+        new_file      = input_file(newfile)
+        self.delta    = create_diff_df_with_pagecalls(old_file.df,new_file.df)
+        hdr           = create_file_header(new_file.header,new_file.crc)
         cmds          = create_data_contents(self.delta)
         self.file_contents = create_file_contents(hdr,cmds)
         
