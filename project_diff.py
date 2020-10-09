@@ -1,8 +1,5 @@
 #!python3
 
-
-
-
 import pandas as pd
 from datetime import datetime
 import click
@@ -36,21 +33,18 @@ def create_diff_df_with_pagecalls(df1,df2):
             if is_PMB_address:
                 df_closest_preceeding_pageline = df_2[df_2['name']=='PAGE'][df2['line']<line].tail(1)
                 df_delta_with_pages=df_delta_with_pages.append(df_closest_preceeding_pageline)
-        df_delta_with_pages=df_delta_with_pages.sort_values(by=['line'])
-        return df_delta_with_pages
+        return df_delta_with_pages.sort_values(by=['line'])
     df_diff = df1.merge(df2,how='outer',indicator=True).loc[lambda x : x['_merge']=='right_only']
     df_diff = add_missing_pagecalls(df1,df2,df_diff)
     return df_diff
 
 def create_file_header(header,crc):
     diff_header=header
-    now=datetime.now().strftime("%Y/%m/%d %H:%M:%S")
-    diff_header[-1]=now
+    diff_header[-1]=datetime.now().strftime("%Y/%m/%d %H:%M:%S")
     header_contents=''
     for line in diff_header:
         header_contents=header_contents+f"{line}"+'\n'
-    header_contents=header_contents+'\n'+crc+'\n'+'\n'
-    return header_contents
+    return header_contents+'\n'+crc+'\n'+'\n'
 
 def create_data_contents(delta):
     delta_list=delta[['name','value','address']].values.tolist()
@@ -103,9 +97,8 @@ if __name__=='__main__':
         click.echo('')
         click.echo('diff file generated.  end of line')
         
-
-
     inp()
+
     #oldprojectfile = 'sample_files/ISL69269-0 0x60e.txt'
     #newprojectfile = 'sample_files/ISL69269-0 0x60f.txt'
     #outputfilename = 'diff_file_ef.txt'

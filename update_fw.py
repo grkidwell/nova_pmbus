@@ -1,18 +1,16 @@
 import lib.nova_lib as nova
 import sys
 
-patchfilename = '' #'sample_files/patch_2_0_5_0.txt'
+patchfilename = 'sample_files/patch_2_0_5_0.txt'
 SMB_Add = 0x60
 
-try:
-    with open(patchfilename) as file:
-        file_contents = file.read()
-except:
-    sys.exit("enter valid filename into variable 'patchfilename' and rerun program")
-
-    
-lines        = file_contents.split('\n')
-commands     = lines[0:-1]
+def commands(patchfilename):
+    try:
+        with open(patchfilename) as file:
+            file_contents = file.read()
+    except:
+        sys.exit("enter valid filename into variable 'patchfilename' and rerun program")
+    return file_contents.split('\n')[0:-1]
 
 def disable_controller():
     onoff= nova.Enable(dev_addr=SMB_Add)
@@ -28,8 +26,8 @@ if proceed == "y" or proceed == "yes":
     print("halting fw")
     nova.Command('halt_FW',SMB_Add).write_reg()
     print("loading fw patch")
-    nova.load_fw_commands(commands,SMB_Add)
-    nova.Command('commit_patch_data',SMB_Add).write_reg()
+    nova.load_fw_commands(commands(patchfilename),SMB_Add)
+    #nova.Command('commit_patch_data',SMB_Add).write_reg()
     if (int(nova.Command('patch_status',SMB_Add).formatted()[0],16) >>4 & 1):
         input('fw patch successful! Cycle Vcc then press enter to display fw revision')
         print(f"fw revision = {nova.Command('fw_revision',SMB_Add).formatted()}")

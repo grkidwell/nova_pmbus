@@ -10,7 +10,6 @@ try:
 except:
     sys.exit("enter valid filename into variable 'hexfilename' and rerun program")
 
-
 lines        = file_contents.split('\n')
 header       = lines[:5]
 commands     = lines[5:-2]
@@ -43,8 +42,6 @@ def print_new_nvm_and_crc_info():
     crc = nova.Command('crc',SMB_Add).formatted()
     print(f"new CRC: {crc}")
         
-
-
 
 #main program
 
