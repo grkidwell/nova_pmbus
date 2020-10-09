@@ -409,8 +409,8 @@ class _I2CInterface(object):
         if ignore_nack and (read_buffer[1] & 0x01) == 0x01:
             return None
         elif (read_buffer[1] & 0x01) == 0x01:
-            print("DEV READ ERR")
-            print(read_buffer)
+            print("DEV READ ERROR. RETRYING")
+            #print(read_buffer)
             return
         return read_buffer[2:]
 

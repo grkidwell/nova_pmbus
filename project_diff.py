@@ -89,7 +89,7 @@ if __name__=='__main__':
     @click.command()
     @click.option('--oldfile', prompt="old project filename ", help='this *.txt file is created by PowerNavigator')
     @click.option('--newfile', prompt="new project filename ", help='this *.txt file is created by PowerNavigator')
-    @click.option('--outfile', prompt="output project filename ", help='this *.txt file can be used as an input file by config_2_ram.py')
+    @click.option('--outfile', prompt="output project filename. ", help='Use project_to_ram.py to load this file to RAM.')
 
     def inp(oldfile,newfile,outfile):
         diff = file_delta(oldfile,newfile,outfile)
