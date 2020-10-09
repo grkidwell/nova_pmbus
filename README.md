@@ -3,7 +3,7 @@ python libraries for Renesas Nova Digital Multiphase controllers
 
 Jupyter notebook and stand alone *.py version for most of below utilities:  
 
-1. write_otp    - write *.hex file to OTP ban  
+1. write_otp    - write *.hex file to OTP bank    
    *edit input file variable at top of *.py program before running    
 
 2. update_fw    - update fw with *.txt file  
