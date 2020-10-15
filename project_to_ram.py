@@ -1,4 +1,4 @@
-import lib.nova_lib as nova
+mport lib.nova_lib as nova
 import sys
 import click
 
@@ -24,12 +24,6 @@ onoff= nova.Enable(dev_addr=SMB_Add)
 #main program
 nova.set_page(0,SMB_Add)
 onoff.off()
-#try:
-#    commands = inputfile(configfilename).commands
-#    load_and_ready(commands)
-#    print('load successful! exiting program.  end of line')
-#except:
-#    sys.exit("load failed! exiting program.  end of line")
 
 if __name__=='__main__':
 
