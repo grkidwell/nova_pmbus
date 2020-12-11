@@ -13,7 +13,7 @@ Jupyter notebook and stand alone *.py version for most of below utilities:
    *.py version has commandline interface with prompts  
 
 4. project_diff - create difflist from 2 project files.  
-   *output file can be used by config_2_ram program   
+   *output file can be used by project_to_ram program   
    *.py version has commandline interface with prompts  
 
 5. pmbus_tool.ipynb - jupyter notebook utility for pmbus and dma read/write
